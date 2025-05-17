@@ -8,5 +8,4 @@ bin/*
 out/*
 logs/*
 reports/*
-/target/
-/bin/
+test-output/*
