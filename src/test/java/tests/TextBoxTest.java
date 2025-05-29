@@ -1,6 +1,7 @@
 package tests;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import java.time.Duration;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -14,7 +15,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import java.time.Duration;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+import utils.ConfigManager;
 
 public class TextBoxTest {
     private static final Logger logger = LogManager.getLogger(TextBoxTest.class);
@@ -24,53 +27,47 @@ public class TextBoxTest {
     @BeforeMethod
     public void setup() {
         logger.info("Setting up test environment");
-        WebDriverManager.chromedriver().setup();
         
+        // Setup WebDriverManager
+        WebDriverManager.chromedriver().clearDriverCache().setup();
+        
+        // Configure Chrome options
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless=new");
-        options.addArguments("--window-size=1920,1080");
-        options.addArguments("--disable-gpu");
-        driver = new ChromeDriver(options);
-
-        logger.debug("Configuring browser settings");
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        if (ConfigManager.getBooleanProperty("headless")) {
+            options.addArguments("--headless=new");
+        }
+        options.addArguments("--window-size=" + 
+            ConfigManager.getIntProperty("window.width") + "," + 
+            ConfigManager.getIntProperty("window.height"));
         
-        logger.info("Navigating to application URL");
-        driver.get("https://demoqa.com/");
+        // Initialize driver
+        driver = new ChromeDriver(options);
+        wait = new WebDriverWait(driver, 
+            Duration.ofSeconds(ConfigManager.getIntProperty("explicit.wait")));
+        
+        // Navigate to base URL
+        logger.info("Navigating to application URL: {}", ConfigManager.getProperty("base.url"));
+        driver.get(ConfigManager.getProperty("base.url"));
         wait.until(ExpectedConditions.jsReturnsValue("return document.readyState === 'complete';"));
-        logger.debug("Browser launched successfully");
     }
 
     @Test
     public void textBoxText() {
         logger.info("Starting textBoxText test execution");
 
-        // Test data
-        final String fullName = "A Tester";
-        final String email = "ATester@test.com";
-        final String currentAddress = "Noida, Uttar Pradesh, India";
-        final String permanentAddress = "New Delhi, India";
-        logger.debug("Test data initialized");
+        // Load test data from config
+        final String fullName = ConfigManager.getProperty("full.name");
+        final String email = ConfigManager.getProperty("email");
+        final String currentAddress = ConfigManager.getProperty("current.address");
+        final String permanentAddress = ConfigManager.getProperty("permanent.address");
+        logger.debug("Test data loaded successfully");
 
-        // 1. Navigate to Elements - Fixed selector
-        logger.info("Navigating to Elements section");
-        WebElement elementsCard = wait.until(ExpectedConditions.elementToBeClickable(
-            By.xpath("//div[@class='card-body']/h5[text()='Elements']/..")
-        ));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", elementsCard);
-        logger.debug("Clicked on Elements card");
-
-        // 2. Verify URL
-        wait.until(ExpectedConditions.urlToBe("https://demoqa.com/elements"));
-        logger.info("Verified Elements page URL");
-
-        // 3. Open Text Box form - Direct navigation
-        logger.info("Opening Text Box form");
-        driver.get("https://demoqa.com/text-box");
+        // Navigate directly to text-box page
+        logger.info("Navigating to Text Box page");
+        driver.get(ConfigManager.getProperty("textbox.url"));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("userName")));
-        logger.debug("Text Box form loaded");
 
-        // 4. Fill form - Optimized entry
+        // Fill form
         logger.info("Filling text box form");
         WebElement userName = driver.findElement(By.id("userName"));
         userName.sendKeys(fullName);
@@ -79,37 +76,26 @@ public class TextBoxTest {
         driver.findElement(By.id("userEmail")).sendKeys(email);
         logger.debug("Entered email: {}", email);
 
-        // Use JavaScript for long text entry (better performance)
+        // Use JavaScript for long text entry
         WebElement currentAddr = driver.findElement(By.id("currentAddress"));
         ((JavascriptExecutor) driver).executeScript(
-            "arguments[0].value = arguments[1];", 
-            currentAddr, currentAddress
-        );
-        logger.debug("Entered current address: {}", currentAddress);
+            "arguments[0].value = arguments[1];", currentAddr, currentAddress);
+        logger.debug("Entered current address");
 
         WebElement permanentAddr = driver.findElement(By.id("permanentAddress"));
         ((JavascriptExecutor) driver).executeScript(
-            "arguments[0].value = arguments[1];", 
-            permanentAddr, permanentAddress
-        );
-        logger.debug("Entered permanent address: {}", permanentAddress);
+            "arguments[0].value = arguments[1];", permanentAddr, permanentAddress);
+        logger.debug("Entered permanent address");
 
-        // 5. Submit form - Robust click
+        // Submit form
         logger.info("Submitting form");
         WebElement submitButton = driver.findElement(By.id("submit"));
-        
-        // Scroll into view with offset to avoid footer
         ((JavascriptExecutor) driver).executeScript(
-            "arguments[0].scrollIntoView({behavior: 'auto', block: 'center', inline: 'center'});" +
-            "window.scrollBy(0, -100);", 
-            submitButton
-        );
-        
-        // Use JavaScript click to avoid element interception
+            "arguments[0].scrollIntoView({behavior:'smooth',block:'center'});", submitButton);
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitButton);
         logger.debug("Form submitted");
 
-        // 6. Verify output - Smart text verification
+        // Verify output
         logger.info("Verifying output");
         WebElement outputBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("output")));
         
@@ -120,7 +106,6 @@ public class TextBoxTest {
         wait.until(d -> outputBox.getText().contains("Email:" + email));
         logger.debug("Verified email presence");
         
-        // Use contains with substring for long addresses
         String currentAddrSub = currentAddress.substring(0, 20);
         wait.until(d -> outputBox.getText().contains(currentAddrSub));
         logger.debug("Verified current address presence");
