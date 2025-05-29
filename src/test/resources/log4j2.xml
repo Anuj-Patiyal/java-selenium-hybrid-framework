@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <!-- Console Appender -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%-5level] %c{1} - %msg%n"/>
+        </Console>
+        
+        <!-- File Appender -->
+        <File name="File" fileName="logs/test-execution.log" append="false">
+            <PatternLayout pattern="%d{dd-MM-yyyy HH:mm:ss.SSS} [%-5level] %c{1} - %msg%n"/>
+        </File>
+    </Appenders>
+    
+    <Loggers>
+        <!-- Root Logger -->
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Root>
+        
+        <!-- Detailed Logger for our Tests -->
+        <Logger name="tests" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Logger>
+    </Loggers>
+</Configuration>
