@@ -1,9 +1,9 @@
 package pages;
 
+import base.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import base.BasePage;
 
 public class TextBoxPage extends BasePage {
     
@@ -31,7 +31,7 @@ public class TextBoxPage extends BasePage {
 
     @Override
     public boolean isAt() {
-        return fullNameInput.isDisplayed();
+        return wait.until(d -> fullNameInput.isDisplayed());
     }
     
     public void fillForm(String fullName, String email, String currentAddress, String permanentAddress) {

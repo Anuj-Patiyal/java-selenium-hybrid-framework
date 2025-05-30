@@ -1,9 +1,9 @@
 package pages;
 
+import base.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import base.BasePage;
 
 public class HomePage extends BasePage {
     
@@ -16,7 +16,7 @@ public class HomePage extends BasePage {
 
     @Override
     public boolean isAt() {
-        return elementsCard.isDisplayed();
+        return wait.until(d -> elementsCard.isDisplayed());
     }
     
     public void navigateToElements() {

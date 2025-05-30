@@ -1,9 +1,9 @@
 package pages;
 
+import base.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import base.BasePage;
 
 public class ElementsPage extends BasePage {
     
@@ -16,7 +16,7 @@ public class ElementsPage extends BasePage {
 
     @Override
     public boolean isAt() {
-        return textBoxMenuItem.isDisplayed();
+        return wait.until(d -> textBoxMenuItem.isDisplayed());
     }
     
     public void navigateToTextBox() {
