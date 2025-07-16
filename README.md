@@ -1,4 +1,4 @@
-# 🚀 Java Selenium Hybrid Framework- (v0.1.0)
+# 🚀 Java Selenium Hybrid Framework (v0.2.0)
 **Enterprise-Grade Test Automation Solution**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -43,6 +43,7 @@ Enterprise-grade test automation framework combining the best practices of:
 - ✅ Headless test execution with Selenium
 - ✅ TestNG-powered structured test execution
 - ✅ Maven-based dependency and build lifecycle
+
 > Future enhancements include Page Object Model, CI/CD, reporting, and parallel execution.
 
 ---
@@ -51,8 +52,8 @@ Enterprise-grade test automation framework combining the best practices of:
 
 | Feature                         | Status      | Version |
 |---------------------------------|-------------|---------|
-| Maven initial setup             | 🚧 WIP      | v0.1.0  |
-| First Simple Test               | ⏳ Planned  | v0.2.0  | 
+| Maven initial setup             | ✅ Live     | v0.1.0  |
+| First Simple Test               | 🚧 WIP      | v0.2.0  | 
 | Configuration by .properties    | ⏳ Planned  | v0.3.0  | 
 | CI Integration (GitHub Actions) | ⏳ Planned  | v0.4.0  |
 ---
@@ -83,9 +84,12 @@ cd java-selenium-hybrid-framework
 
 ---
 
-## 📂 Project Structure
+## 📂 Current Project Structure (v0.2.0)
 ```
-📦 java-selenium-hybrid-framework (v0.1.0)  
+📦 java-selenium-hybrid-framework    
+├── 📂 src/test/java  
+│   ├── 📂 tests                    # Test Classes  
+│   │   ├── TextBoxTest.java        # Simple test    
 ├── 📜 pom.xml                      # Maven dependencies  
 ├── 📜 README.md                    # Project documentation  
 ├── 📜 LICENSE                      # MIT license  
@@ -100,15 +104,18 @@ cd java-selenium-hybrid-framework
 
 ```bash
 # Run all tests
-mvn clean
+mvn clean test
 
+# Run specific test
+mvn test -Dtest=HomePageTest
 ```
 
 ---
 
 ## 📌 Release Notes
-**Maven initial setup (v0.1.0)
+**Maven initial setup (v0.2.0)
 ### ✅ Features Included
+    - Simple TestNG Test (src/test/java/tests/`TextBoxText.java`)
     - 📦 Dependencies:
         - `Selenium` `4.34.0`
         - `TestNG` `7.11.0`
@@ -128,10 +135,10 @@ mvn clean
 ## 🗺 Roadmap
 | Version | Target Date  | Features Included                          |
 |---------|--------------|--------------------------------------------|
-| v0.1.0  | 16-July-2025 | Maven initial setup                        |
-| v0.2.0  | 16-July-2025 | First working test                         |
-| v0.3.0  | 16-July-2025 | Configuration via properties | POM core    |
-| v0.4.0  | 16-July-2025 | CI via GitHub Action                       |
+| v0.1.0  | 15-July-2025 | Maven initial setup                        |
+| v0.2.0  | 15-July-2025 | First working test                         |
+| v0.3.0  | 15-July-2025 | Configuration via properties | POM core    |
+| v0.4.0  | 15-July-2025 | CI via GitHub Action                       |
 
 ---
 
@@ -144,7 +151,7 @@ mvn clean
 
 ---
 
-## 👨‍💻 Author
+## 👤 Author
 
 **ANUJ KUMAR** 🏅 QA Consultant & Test Automation Engineer
 - 📧 Email: [anujpatiyal@live.in](mailto:anujpatiyal@live.in)
