@@ -1,4 +1,4 @@
-# 🚀 Java Selenium Hybrid Framework (v0.3.0)
+# 🚀 Java Selenium Hybrid Framework (v0.4.0)
 **Enterprise-Grade Test Automation Solution**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -88,9 +88,13 @@ cd java-selenium-hybrid-framework
 
 ---
 
-## 📂 Current Project Structure (v0.3.0)
+## 📂 Current Project Structure (v0.4.0)
 ```
 📦 java-selenium-hybrid-framework  
+
+├── 📂 .github  
+│   └── 📂 workflow                 #  
+│       └── ci.yml                  # Yml configuration file
 ├── 📂 src/main/java  
 │   └── 📂 utils                    # Utilities & Helpers  
 │       └── ConfigManager.java      # Properties file loader  
@@ -122,7 +126,7 @@ mvn test -Dtest=TextBoxTest
 ---
 
 ## 📌 Release Notes
-**Maven initial setup (v0.3.0)
+**Maven initial setup (v0.4.0)
 ### ✅ Features Included
     - Simple TestNG Test (src/test/java/tests/`TextBoxText.java`)
     - Configuratin Manager (src/main/java/utils/`ConfigManager.java`)
