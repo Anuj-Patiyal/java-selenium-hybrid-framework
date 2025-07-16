@@ -1,4 +1,4 @@
-# 🚀 Java Selenium Hybrid Framework (v0.2.0)
+# 🚀 Java Selenium Hybrid Framework (v0.3.0)
 **Enterprise-Grade Test Automation Solution**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -50,12 +50,16 @@ Enterprise-grade test automation framework combining the best practices of:
 
 ## 🎯 Features
 
+```
 | Feature                         | Status      | Version |
 |---------------------------------|-------------|---------|
 | Maven initial setup             | ✅ Live     | v0.1.0  |
-| First Simple Test               | 🚧 WIP      | v0.2.0  | 
-| Configuration by .properties    | ⏳ Planned  | v0.3.0  | 
-| CI Integration (GitHub Actions) | ⏳ Planned  | v0.4.0  |
+| First Simple Test               | ✅ Live     | v0.2.0  | 
+| Configuration by .properties    | ✅ Live     | v0.3.0  | 
+| CI Integration (GitHub Actions) | 🚧 WIP      | v0.4.0  |
+| POM Integration                 | ⏳ Planned  | v0.5.0  |
+```
+
 ---
 
 ## 🛠 Technology Stack
@@ -84,12 +88,17 @@ cd java-selenium-hybrid-framework
 
 ---
 
-## 📂 Current Project Structure (v0.2.0)
+## 📂 Current Project Structure (v0.3.0)
 ```
-📦 java-selenium-hybrid-framework    
+📦 java-selenium-hybrid-framework  
+├── 📂 src/main/java  
+│   └── 📂 utils                    # Utilities & Helpers  
+│       └── ConfigManager.java      # Properties file loader  
+├── 📂 src/main/resources           # Configs & Static Files  
+│   └── config.properties           # Environment variables  
 ├── 📂 src/test/java  
-│   ├── 📂 tests                    # Test Classes  
-│   │   ├── TextBoxTest.java        # Simple test    
+│   └── 📂 tests                    # Test Classes  
+│       └── TextBoxTest.java        # Test Box test  
 ├── 📜 pom.xml                      # Maven dependencies  
 ├── 📜 README.md                    # Project documentation  
 ├── 📜 LICENSE                      # MIT license  
@@ -107,22 +116,25 @@ cd java-selenium-hybrid-framework
 mvn clean test
 
 # Run specific test
-mvn test -Dtest=HomePageTest
+mvn test -Dtest=TextBoxTest
 ```
 
 ---
 
 ## 📌 Release Notes
-**Maven initial setup (v0.2.0)
+**Maven initial setup (v0.3.0)
 ### ✅ Features Included
     - Simple TestNG Test (src/test/java/tests/`TextBoxText.java`)
-    - 📦 Dependencies:
-        - `Selenium` `4.34.0`
-        - `TestNG` `7.11.0`
-    - 🔌 Plugins:
-        - `Maven compiler plugin` `3.14.0` with:
-            - `Java-21` release
-        - `Maven clean plugin` `3.5.0`
+    - Configuratin Manager (src/main/java/utils/`ConfigManager.java`)
+    - config`.properties` (src/main/resources/config.properites)
+    - pom.xml with:
+        - 📦 Dependencies:
+            - `Selenium` `4.34.0`
+            - `TestNG` `7.11.0`
+        - 🔌 Plugins:
+            - `Maven compiler plugin` `3.14.0` with:
+                - `Java-21` release
+            - `Maven clean plugin` `3.5.0`
     - 📁 `.gitignore` for Java/Maven
     - 📚 Professional `README.md` with:
     - Features
@@ -135,10 +147,10 @@ mvn test -Dtest=HomePageTest
 ## 🗺 Roadmap
 | Version | Target Date  | Features Included                          |
 |---------|--------------|--------------------------------------------|
-| v0.1.0  | 15-July-2025 | Maven initial setup                        |
-| v0.2.0  | 15-July-2025 | First working test                         |
-| v0.3.0  | 15-July-2025 | Configuration via properties | POM core    |
-| v0.4.0  | 15-July-2025 | CI via GitHub Action                       |
+| v0.1.0  | 16-July-2025 | Maven initial setup                        |
+| v0.2.0  | 16-July-2025 | First working test                         |
+| v0.3.0  | 16-July-2025 | Configuration via properties | POM core    |
+| v0.4.0  | 16-July-2025 | CI via GitHub Action                       |
 
 ---
 
