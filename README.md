@@ -1,4 +1,5 @@
-# 🚀 Java Selenium Hybrid Framework (`v0.2.0`)
+
+# 🚀 Java Selenium Hybrid Framework (`v0.3.0`)
 **Enterprise-Grade Test Automation Solution**
 > An end-to-end Selenium, TestNG, and Maven-based test automation framework for modern web applications.
 
@@ -26,14 +27,12 @@
 - [License](#-license)
 
 ```mermaid
-
 graph LR
     A[Test Layer] --> B[Page Objects]
     B --> C[Component Library]
     C --> D[Core Framework]
     D --> E[Driver Management]
     E --> F[Browser Stack/Selenium Grid]
-
 ```
 
 ---
@@ -57,9 +56,10 @@ This project is a highly maintainable, scalable, and modular hybrid test automat
 | Feature                         | Status      | Version |
 |---------------------------------|-------------|---------|
 | Maven initial setup             | ✅ Live     | v0.1.0  |
-| First Simple Test               | 🚧 WIP      | v0.2.0  | 
-| Configuration by .properties    | ⏳ Planned  | v0.3.0  | 
+| First Simple Test               | ✅ Live     | v0.2.0  | 
+| Configuration by .properties    | 🚧 WIP      | v0.3.0  | 
 | CI Integration (GitHub Actions) | ⏳ Planned  | v0.4.0  |
+
 ---
 
 ## 🛠 Technology Stack
@@ -88,17 +88,21 @@ cd java-selenium-hybrid-framework
 
 ---
 
-## 📂 Current Project Structure 
+## 📂 Project Structure 
 ```
-📦 java-selenium-hybrid-framework-0.2.0   
+📦 java-selenium-hybrid-framework  
+├── 📂 src/main/java  
+│   └── 📂 utils                    # Utilities & Helpers  
+│       └── ConfigManager.java      # Properties file loader  
+├── 📂 src/main/resources           # Configs & Static Files  
+│   └── config.properties           # Environment variables  
 ├── 📂 src/test/java  
-│   ├── 📂 tests                    # Test Classes  
-│   │   ├── TextBoxTest.java        # Simple test    (new)
-├── 📜 pom.xml                      # Maven dependencies (existing) 
-├── 📜 README.md                    # Project documentation (Updated)  
+│   └── 📂 tests                    # Test Classes  
+│       └── TextBoxTest.java        # Test Box test  
+├── 📜 pom.xml                      # Maven dependencies  
+├── 📜 README.md                    # Project documentation  
 ├── 📜 LICENSE                      # MIT license  
-└── 📜 .gitignore                   # Ignores (target/, logs/, etc.)  
-
+└── 📜 .gitignore                   # Ignores (target/, logs/, etc.) 
 ```
 
 ---
@@ -116,7 +120,7 @@ mvn test -Dtest=TextBoxTest
 ---
 
 ## 📌 Release Notes
-**First Simple Test (`v0.2.0`)**
+**Configutation Manager (`v0.3.0`)**
 - ✅ Features Included
     - Simple TestNG Test (src/test/java/tests/`TextBoxTest.java`)
     - 📦 Dependencies:
@@ -128,39 +132,38 @@ mvn test -Dtest=TextBoxTest
         - `Maven clean plugin` `3.5.0`
     - 📁 `.gitignore` for Java/Maven
     - 📚 Professional `README.md` with:
-    - Features
-    - Roadmap
-    - Getting Started
-    - Author & License info
+        - Features
+        - Roadmap
+        - Getting Started
+        - Author & License info
 
 ---
 
 ## 🗺 Roadmap
 | Version | Feature                           | Status         | Target Date |
-| ------ | ---------------------------------  | ---------------| ----------- |
-| v0.1.0 | Maven initial configuration        | ✅ Done        | 21-Jul-2025 |
-| v0.2.0 | First simple test (TextBoxTest)    | 🚧 In Progress | 21-Jul-2025 |
-| v0.3.0 | Configuration setup                | ⏳ Upcoming    | 21-Jul-2025 |
-| v0.4.0 | CI Integration                     | ⏳ Upcoming    | 21-Jul-2025 |
-| v0.5.0 | Log4j Integration                  | 🔜 Planned     | 22-Jul-2025 |
-| v0.6.0 | driver setup, DM, DF, BT classes   | ⏳ Planned     | 22-Jul-2025 |
-| v0.7.0 | Page Object Model (POM) structure  | ⏳ Planned     | 22-Jul-2025 |
-| v0.8.0 | Wait Strategy and Exception Hand.  | 🔜 Planned     | 23-Jul-2025 |
-| v0.9.0 | Screenshot capture on failure      | 🔜 Planned     | 23-Jul-2025 |
-| v1.0.0 | TestNG Listeners                   | 🔜 Planned     | 23-Jul-2025 |
-| v1.1.0 | ExtentReports Integration          | 🔜 Planned     | 24-Jul-2025 |
-| v1.2.0 | Retry Analyzer for flaky tests     | 🔜 Planned     | 24-Jul-2025 |
-| v1.3.0 | Cross-browser support              | 🔜 Planned     | 24-Jul-2025 |
-| v1.4.0 | CI/CD with GitHub Actions          | 🔜 Planned     | 25-Jul-2025 |
+| ------- | ---------------------------------  | ---------------| ------------|
+| v0.1.0  | Maven initial configuration        | ✅ Done        | 21-Jul-2025 |
+| v0.2.0  | First simple test (TextBoxTest)    | ✅ Done        | 21-Jul-2025 |
+| v0.3.0  | Configuration setup                | 🚧 In Progress | 21-Jul-2025 |
+| v0.4.0  | CI Integration                     | ⏳ Upcoming    | 21-Jul-2025 |
+| v0.5.0  | Log4j Integration                  | 🔜 Planned     | 22-Jul-2025 |
+| v0.6.0  | driver setup, DM, DF, BT classes   | ⏳ Planned     | 22-Jul-2025 |
+| v0.7.0  | Page Object Model (POM) structure  | ⏳ Planned     | 22-Jul-2025 |
+| v0.8.0  | Wait Strategy and Exception Hand.  | 🔜 Planned     | 23-Jul-2025 |
+| v0.9.0  | Screenshot capture on failure      | 🔜 Planned     | 23-Jul-2025 |
+| v1.0.0  | TestNG Listeners                   | 🔜 Planned     | 23-Jul-2025 |
+| v1.1.0  | ExtentReports Integration          | 🔜 Planned     | 24-Jul-2025 |
+| v1.2.0  | Retry Analyzer for flaky tests     | 🔜 Planned     | 24-Jul-2025 |
+| v1.3.0  | Cross-browser support              | 🔜 Planned     | 24-Jul-2025 |
+| v1.4.0  | CI/CD with GitHub Actions          | 🔜 Planned     | 25-Jul-2025 |
 
 ---
 
-
 ## 📸 Screenshots / Reports
-
 _Coming soon: ExtentReports dashboard, test result screenshots, and summary._
 
 ---
+
 ## 👥 Contribution
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
