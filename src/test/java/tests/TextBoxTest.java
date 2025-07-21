@@ -3,11 +3,18 @@ package tests;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import utils.ConfigManager;
+
+import java.time.Duration;
 
 public class TextBoxTest {
 
@@ -15,27 +22,44 @@ public class TextBoxTest {
 
     @BeforeClass
     public void setUp() {
-        driver = new ChromeDriver();
+        System.out.println("Loading configuration...");
+        System.out.println("Base URL: " + ConfigManager.getBaseUrl());
+        System.out.println("Headless mode: " + ConfigManager.isHeadless());
+
+        ChromeOptions options = new ChromeOptions();
+        if (ConfigManager.isHeadless()) {
+            options.addArguments("--headless=new");
+            options.addArguments("--disable-gpu");
+        }
+
+        driver = new ChromeDriver(options);
         driver.manage().window().maximize();
-        driver.get("https://demoqa.com/text-box");
     }
 
     @Test
     public void testTextBoxFormSubmission() {
+        String expectedUrl = ConfigManager.getBaseUrl();
+        System.out.println("Navigating to: " + expectedUrl);
+
+        driver.get(expectedUrl);
+
         // Input Data
         String fullName = "John Doe";
         String email = "john.doe@example.com";
         String currentAddress = "123 Main St";
         String permanentAddress = "456 Secondary St";
 
-        // Locate elements and fill them
+        // Fill the form
         driver.findElement(By.id("userName")).sendKeys(fullName);
         driver.findElement(By.id("userEmail")).sendKeys(email);
         driver.findElement(By.id("currentAddress")).sendKeys(currentAddress);
         driver.findElement(By.id("permanentAddress")).sendKeys(permanentAddress);
 
-        // Submit the form
-        driver.findElement(By.id("submit")).click();
+        // Scroll into view and wait for the button to be clickable
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement submitButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("submit")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", submitButton);
+        submitButton.click();
 
         // Output validation
         WebElement nameOutput = driver.findElement(By.id("name"));
