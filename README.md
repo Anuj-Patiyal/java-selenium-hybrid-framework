@@ -1,5 +1,5 @@
 
-# 🚀 Java Selenium Hybrid Framework (`v0.3.0`)
+# 🚀 Java Selenium Hybrid Framework (`v0.4.0`)
 **Enterprise-Grade Test Automation Solution**
 > An end-to-end Selenium, TestNG, and Maven-based test automation framework for modern web applications.
 
@@ -9,6 +9,7 @@
 ![TestNG](https://img.shields.io/badge/TestNG-7.11.0-red)
 ![Maven](https://img.shields.io/badge/Maven-3.9+-blueviolet)
 ![Build](https://img.shields.io/badge/build-pending-yellow)
+![Build Status](https://github.com/Anuj-Patiyal/java-selenium-framework/actions/workflows/ci.yml/badge.svg)](https://github.com/Anuj-Patiyal/java-selenium-framework/actions/workflows/ci.yml)
 
 ---
 
@@ -53,12 +54,13 @@ This project is a highly maintainable, scalable, and modular hybrid test automat
 
 ## 🎯 Features
 
-| Feature                         | Status      | Version |
-|---------------------------------|-------------|---------|
-| Maven initial setup             | ✅ Live     | v0.1.0  |
-| First Simple Test               | ✅ Live     | v0.2.0  | 
-| Configuration by .properties    | 🚧 WIP      | v0.3.0  | 
-| CI Integration (GitHub Actions) | ⏳ Planned  | v0.4.0  |
+| Feature                            | Status      | Version |
+|------------------------------------|-------------|---------|
+| Maven initial setup                | ✅ Live     | v0.1.0  |
+| First Simple Test                  | ✅ Live     | v0.2.0  | 
+| Configuration by .properties       | ✅ Live     | v0.3.0  | 
+| CI Integration (GitHub Actions)    | 🚧 WIP      | v0.4.0  |
+| WebDriver setup DM, DF, BT classes | ⏳ Planned  | v0.5.0  |
 
 ---
 
@@ -90,19 +92,25 @@ cd java-selenium-hybrid-framework
 
 ## 📂 Project Structure 
 ```
-📦 java-selenium-hybrid-framework  
-├── 📂 src/main/java  
-│   └── 📂 utils                    # Utilities & Helpers  
-│       └── ConfigManager.java      # Properties file loader  
-├── 📂 src/main/resources           # Configs & Static Files  
-│   └── config.properties           # Environment variables  
-├── 📂 src/test/java  
-│   └── 📂 tests                    # Test Classes  
-│       └── TextBoxTest.java        # Test Box test  
-├── 📜 pom.xml                      # Maven dependencies  
-├── 📜 README.md                    # Project documentation  
-├── 📜 LICENSE                      # MIT license  
-└── 📜 .gitignore                   # Ignores (target/, logs/, etc.) 
+📦 java-selenium-hybrid-framework-0.4.0
+├── 📂 .github  
+│   └── 📂 workflows                  # CI workflows for GitHub Actions  
+│       └── 📄 ci.yml                 # Java CI pipeline with Maven  
+├── 📂 src  
+│   ├── 📂 main  
+│   │   ├── 📂 java  
+│   │   │   └── 📂 utils              # Utilities & helpers  
+│   │   │       └── 📄 ConfigManager.java  # Properties file loader  
+│   │   └── 📂 resources             # Configs & static files  
+│   │       └── 📄 config.properties # Environment variables  
+│   └── 📂 test  
+│       └── 📂 java  
+│           └── 📂 tests             # Test classes  
+│               └── 📄 TextBoxTest.java   # Simple text box test  
+├── 📄 pom.xml                       # Maven dependencies and plugins  
+├── 📄 .gitignore                    # Ignored files (target/, logs/, etc.)  
+├── 📄 LICENSE                       # MIT license  
+└── 📄 README.md                     # Project documentation  
 ```
 
 ---
@@ -120,33 +128,31 @@ mvn test -Dtest=TextBoxTest
 ---
 
 ## 📌 Release Notes
-**Configutation Manager (`v0.3.0`)**
+**⚙️ CI/CD Integration (v0.4.0)**
 - ✅ Features Included
-    - Simple TestNG Test (src/test/java/tests/`TextBoxTest.java`)
-    - 📦 Dependencies:
-        - `Selenium` `4.34.0`
-        - `TestNG` `7.11.0`
-    - 🔌 Plugins:
-        - `Maven compiler plugin` `3.14.0` with:
-            - `Java-21` release
-        - `Maven clean plugin` `3.5.0`
-    - 📁 `.gitignore` for Java/Maven
-    - 📚 Professional `README.md` with:
-        - Features
-        - Roadmap
-        - Getting Started
-        - Author & License info
+- ✅ CI/CD Pipeline Integration via GitHub Actions
+- /.github/workflows/ci.yml
+- Builds and verifies the project on:
+    - Push to main
+    - Pull requests to main
+    - Uses:
+        - actions/checkout@v4
+        - actions/setup-java@v4 with Java 21
+        - mvn package command for build
+    - Dependency graph submission
+---
+
 
 ---
 
 ## 🗺 Roadmap
-| Version | Feature                           | Status         | Target Date |
+| Version | Feature                            | Status         | Target Date |
 | ------- | ---------------------------------  | ---------------| ------------|
 | v0.1.0  | Maven initial configuration        | ✅ Done        | 21-Jul-2025 |
 | v0.2.0  | First simple test (TextBoxTest)    | ✅ Done        | 21-Jul-2025 |
-| v0.3.0  | Configuration setup                | 🚧 In Progress | 21-Jul-2025 |
-| v0.4.0  | CI Integration                     | ⏳ Upcoming    | 21-Jul-2025 |
-| v0.5.0  | Log4j Integration                  | 🔜 Planned     | 22-Jul-2025 |
+| v0.3.0  | Configuration setup                | ✅ Done        | 21-Jul-2025 |
+| v0.4.0  | CI Integration                     | 🚧 In Progress | 21-Jul-2025 |
+| v0.5.0  | Log4j Integration                  | ⏳ Upcoming    | 22-Jul-2025 |
 | v0.6.0  | driver setup, DM, DF, BT classes   | ⏳ Planned     | 22-Jul-2025 |
 | v0.7.0  | Page Object Model (POM) structure  | ⏳ Planned     | 22-Jul-2025 |
 | v0.8.0  | Wait Strategy and Exception Hand.  | 🔜 Planned     | 23-Jul-2025 |
