@@ -1,5 +1,5 @@
 
-# 🚀 Java Selenium Hybrid Framework (`v0.4.0`)
+# 🚀 Java Selenium Hybrid Framework (`v0.5.0`)
 **Enterprise-Grade Test Automation Solution**
 > An end-to-end Selenium, TestNG, and Maven-based test automation framework for modern web applications.
 
@@ -58,9 +58,10 @@ This project is a highly maintainable, scalable, and modular hybrid test automat
 |------------------------------------|-------------|---------|
 | Maven initial setup                | ✅ Live     | v0.1.0  |
 | First Simple Test                  | ✅ Live     | v0.2.0  | 
-| Configuration by .properties       | ✅ Live     | v0.3.0  | 
-| CI Integration (GitHub Actions)    | 🚧 WIP      | v0.4.0  |
-| WebDriver setup DM, DF, BT classes | ⏳ Planned  | v0.5.0  |
+| Configuration by .properties       | ✅ Live     | v0.3.0  |
+| CI Integration (GitHub Actions)    | ✅ Live     | v0.4.0  |
+| WebDriver setup DM, DF, BT classes | 🚧 WIP      | v0.5.0  |
+| POM with BP class                  | ⏳ Planned  | v0.6.0  |
 
 ---
 
@@ -94,23 +95,26 @@ cd java-selenium-hybrid-framework
 ```
 📦 java-selenium-hybrid-framework-0.4.0
 ├── 📂 .github  
-│   └── 📂 workflows                  # CI workflows for GitHub Actions  
-│       └── 📄 ci.yml                 # Java CI pipeline with Maven  
+│   └── 📂 workflows                                # CI workflows for GitHub Actions  
+│       └── 📄 ci.yml                               # Java CI pipeline with Maven  
 ├── 📂 src  
 │   ├── 📂 main  
 │   │   ├── 📂 java  
-│   │   │   └── 📂 utils              # Utilities & helpers  
-│   │   │       └── 📄 ConfigManager.java  # Properties file loader  
-│   │   └── 📂 resources             # Configs & static files  
-│   │       └── 📄 config.properties # Environment variables  
+│   │   │   ├── 📂 drivers                          # Driver Management
+│   │   │   │   ├── 📄 DriverManager.java           # WebDriver Manager  
+│   │   │   |   └── 📄 DriverFactory.java           # Browser Manager
+│   │   │   └── 📂 utils                            # Utilities & helpers
+│   │   │       └── 📄 ConfigManager.java           # Properties file loader  
+│   │   └── 📂 resources                            # Configs & static files  
+│   │       └── 📄 config.properties                # Environment variables  
 │   └── 📂 test  
 │       └── 📂 java  
-│           └── 📂 tests             # Test classes  
-│               └── 📄 TextBoxTest.java   # Simple text box test  
-├── 📄 pom.xml                       # Maven dependencies and plugins  
-├── 📄 .gitignore                    # Ignored files (target/, logs/, etc.)  
-├── 📄 LICENSE                       # MIT license  
-└── 📄 README.md                     # Project documentation  
+│           └── 📂 tests                            # Test classes  
+│               └── 📄 TextBoxTest.java             # Simple text box test  
+├── 📄 pom.xml                                      # Maven dependencies and plugins  
+├── 📄 .gitignore                                   # Ignored files (target/, logs/, etc.)  
+├── 📄 LICENSE                                      # MIT license  
+└── 📄 README.md                                    # Project documentation  
 ```
 
 ---
@@ -127,23 +131,40 @@ mvn test -Dtest=TextBoxTest
 
 ---
 
-## 📌 Release Notes
-**⚙️ CI/CD Integration (v0.4.0)**
-- ✅ Features Included
-- ✅ CI/CD Pipeline Integration via GitHub Actions
-- /.github/workflows/ci.yml
-- Builds and verifies the project on:
-    - Push to main
-    - Pull requests to main
-    - Uses:
-        - actions/checkout@v4
-        - actions/setup-java@v4 with Java 21
-        - mvn package command for build
-    - Dependency graph submission
----
-
+## 📌 Release Notes – `v0.5.0`  
+**Driver Configuration & Base Test Setup**
 
 ---
+
+### ✅ Features Included
+
+#### 🔧 WebDriver Management
+- **DriverFactory.java**  
+  - Handles instantiation of drivers based on browser type.
+  - Supports headless mode execution using configuration.
+
+- **DriverManager.java**  
+  - Manages driver instances using `ThreadLocal` to support parallel execution.
+
+- **BaseTest.java**  
+  - Abstract base class for all tests.
+  - Initializes and tears down driver per test using `@BeforeMethod` and `@AfterMethod`.
+
+#### ⚙️ Configuration Support
+- **ConfigManager.java**  
+  - Reads properties from external `config.properties` file.
+  - Exposes parameters like:
+    - `base.url`
+    - `browser`
+    - `headless`
+
+- **config.properties**
+```properties
+base.url=https://demoqa.com/text-box
+browser=chrome
+headless=true
+```
+--
 
 ## 🗺 Roadmap
 | Version | Feature                            | Status         | Target Date |
@@ -151,9 +172,9 @@ mvn test -Dtest=TextBoxTest
 | v0.1.0  | Maven initial configuration        | ✅ Done        | 21-Jul-2025 |
 | v0.2.0  | First simple test (TextBoxTest)    | ✅ Done        | 21-Jul-2025 |
 | v0.3.0  | Configuration setup                | ✅ Done        | 21-Jul-2025 |
-| v0.4.0  | CI Integration                     | 🚧 In Progress | 21-Jul-2025 |
-| v0.5.0  | Log4j Integration                  | ⏳ Upcoming    | 22-Jul-2025 |
-| v0.6.0  | driver setup, DM, DF, BT classes   | ⏳ Planned     | 22-Jul-2025 |
+| v0.4.0  | CI Integration                     | ✅ Done        | 21-Jul-2025 |
+| v0.5.0  | driver setup, DM, DF, BT classes   | 🚧 In Progress | 22-Jul-2025 |
+| v0.6.0  | Log4j Integration                  | ⏳ Planned     | 22-Jul-2025 |
 | v0.7.0  | Page Object Model (POM) structure  | ⏳ Planned     | 22-Jul-2025 |
 | v0.8.0  | Wait Strategy and Exception Hand.  | 🔜 Planned     | 23-Jul-2025 |
 | v0.9.0  | Screenshot capture on failure      | 🔜 Planned     | 23-Jul-2025 |
@@ -173,9 +194,9 @@ _Coming soon: ExtentReports dashboard, test result screenshots, and summary._
 ## 👥 Contribution
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Planned:
-- `CONTRIBUTING.md`
-- Code style guidelines
+- Planned:
+    - `CONTRIBUTING.md`
+    - Code style guidelines
 
 ---
 
