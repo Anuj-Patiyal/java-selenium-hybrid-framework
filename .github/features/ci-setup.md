@@ -11,16 +11,12 @@ labels: automation, ci-cd, github-actions, setup, workflow, testing
 
 This PR introduces a complete **CI/CD pipeline** using GitHub Actions for the Java Selenium Hybrid Automation Framework.
 
----
-
 ## 📁 Project Highlights
 
 - **Workflows**: CI, POM validation, feature PR checks, and release automation
 - **Scripts**: POM validator (v1.4), milestone manager, issue automation, PR processors
 - **Reports**: HTML validation reports + dependency graphs
 - **Maven Optimizations**: CI-specific build, parallel tests, caching
-
----
 
 ## 🧩 Key Features
 
@@ -39,8 +35,6 @@ This PR introduces a complete **CI/CD pipeline** using GitHub Actions for the Ja
 - Java 21, Selenium 4.34.0, TestNG 7.11.0
 - Optimized Surefire plugin with parallel test execution
 
----
-
 ## 🧪 Validation Results
 
 | Scenario| Status |
@@ -53,42 +47,31 @@ This PR introduces a complete **CI/CD pipeline** using GitHub Actions for the Ja
 | Milestone sync| ✅ |
 | GPG signing validation| ✅ |
 
----
-
 ## 🔗 Milestone
-
 - **Version:** `v0.2.0 – CI Setup`
 - **Target Date:** 2025-08-27
 - **Progress:** 100%
 - **Branch:** `feature/ci-setup` → `dev`
 
-Closes #3
-Related: #4, #5
-
----
+Related to: #3
 
 ## 👥 Review Checklist
-
 - [x] Workflows follow GitHub best practices
 - [x] Scripts have error handling & logging
 - [x] Maven build optimized for CI
 - [x] Security measures (GPG, tokens) in place
 - [x] Documentation updated
 
----
 
 ## 🚀 Next Steps
-
 - Merge into `dev`
 - Monitor initial CI runs & artifact generation
 - Update contributor docs with PR/CI process
 - Add branch protection + status checks
 - Extend pipeline for deployments
 
----
 
 ## 📊 Metrics
-
 | Metric| Before CI| After CI |
 |-----------------|------------|------------|
 | Build Time| ~5min| ~2min|
@@ -96,13 +79,3 @@ Related: #4, #5
 | Coverage| Partial| Full |
 | Feedback Time | Hours| Minutes|
 | Release Process | Manual | Automated|
-
----
-
-## 👤 Author
-
-**Anuj Kumar** 🏅
-QA Consultant & Test Automation Engineer
-
-📧 [anujpatiyal@live.in](mailto:anujpatiyal@live.in)
-🔗 [LinkedIn](https://www.linkedin.com/in/anujkumar)

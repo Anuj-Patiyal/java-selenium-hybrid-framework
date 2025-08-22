@@ -1,68 +1,103 @@
 ---
-title: "🎯 Release v0.1.0 - First Simple Test"
+title: "🎯 v0.2.0 - CI-setup"
 assignees: Anuj-Patiyal
 reviewers: opencode-qa
-milestone: v0.1.0
-linked_issue: 2
-labels: test, first-test
+milestone: v0.2.0
+linked_issue: 3
+labels: ci, github-actions, workflows, pipeline
 ---
 
-# 🎯 Release v0.1.0 - First Simple Test
+# 🔧 Release v0.2.0 – CI/CD Pipeline Setup
+📅 Release Date: 2025-08-22
+
+🧪 Milestone: v0.2.0 – CI Setup
 
 {{RELEASE_METADATA}}
 
-## 🚀 Summary
-This is the **first functional release** of our Java Selenium Hybrid Framework. It introduces a foundational UI automation test using **Selenium + TestNG**, setting the stage for further framework development and enhancements.
+🧑‍💻 Author: Anuj Kumar
 
-## ✅ What's Included
+## ✨ Highlights
+This release introduces a robust CI/CD pipeline powered by GitHub Actions, designed for the Java Selenium Hybrid Automation Framework. It enables automated validation, testing, and deployment workflows to ensure continuous quality and delivery.
 
-- 🧪 **Basic Functional Test**
-  Adds the `TextBoxTest.java` to validate form submission on [`https://demoqa.com/text-box`](https://demoqa.com/text-box):
-  - Inputs:
-    - Full Name
-    - Email
-    - Current Address
-    - Permanent Address
-  - Verifies if submitted data is displayed correctly.
+## 🚀 What's New
+### ✅ GitHub Actions Workflows:
+- main-ci.yml: Main pipeline for build, test, and security validation.
+- pom-validation.yml: Automated POM structure checks + HTML reports.
+- feature-pr.yml: CI triggers for feature branches.
+- release-pr.yml: Automated version tagging and milestone management.
 
-- 🧰 **Tech Stack**
-  - Java
-  - Maven
-  - Selenium WebDriver
-  - TestNG
+### 🧪 Enhanced POM Validation
+- Shell script-based validator with:
+  - HTML reports
+  - Dependency version checker
+  - Color-coded console output
+  - Graph generation
 
-## 🔍 Test Execution Summary
+## ⚙️ Maven Configuration Optimized for CI
 
-| Test Method                  | Status  |
-|-----------------------------|---------|
-| `testTextBoxFormSubmission()` | ✅ Passed |
+- Configured with:
+  - surefire-plugin for test execution
+  - clean, compiler plugin enhancements
+  - Environment-sensitive properties for CI
 
-- Ran successfully on Chrome with UI visible.
-- Verified via `mvn clean test`.
-
-## 📁 Project Structure Overview
+## 📂 Changed Files Summary
 ```
-📦 java-selenium-hybrid-framework/
-├── src/test/java/tests/TextBoxTest.java # 🆕 Basic functional test
-├── pom.xml # ✔ Maven config
-├── .gitignore # ✔ Standard ignores
-├── LICENSE # ✔ MIT License
-└── README.md # ✔ Setup Guide
+java-selenium-hybrid-framework/
+├── 📁 .github/
+│   ├── 📁 workflows/                 # GitHub Actions workflows
+│   │   ├── 📄 main-ci.yml            # Main CI pipeline
+│   │   ├── 📄 pom-validation.yml     # POM validation workflow
+│   │   ├── 📄 feature-pr.yml         # Feature branch validation
+│   │   ├── 📄 release-pr.yml         # Release automation
+│   │   └── 📄 release-automation.yml # Release triggers
+│   ├── 📁 scripts/                   # Automation scripts
+│   │   ├── 📄 pom-validator.sh       # Enhanced POM validation (v1.4)
+│   │   ├── 📄 milestones.sh          # Milestone management
+│   │   ├── 📄 issues.sh              # Issue creation
+│   │   ├── 📄 feature-pr.sh          # Feature PR processing
+│   │   └── 📄 release-pr.sh          # Release PR processing
+│   ├── 📁 issues/                    # Issue templates
+│   │   └── 📄 ci-setup-issue.md      # CI setup issue template
+│   ├── 📁 features/                  # Feature PR templates
+│   │   ├── 📄 maven-setup.md         # Initial setup template
+│   │   └── 📄 ci-setup.md            # CI setup template
+│   └── 📁 releases/                  # Release PR templates
+│       ├── 📄 maven-setup-release.md # Initial release template
+│       └── 📄 ci-setup-release.md    # CI release template
+├── pom.xml (CI plugin updates)
+└── README.md (CI badges added)
 ```
 
-## 📌 Linked Items
-- 🔗 Issue: `#2` – First Test Implementation
-- 📌 Milestone: `v0.1.0` – First Working Selenium Test
+## 🧪 Validation Status
 
-## 📈 Roadmap Ahead
+| Feature	               | Result        |
+|--------------------------|---------------|
+| POM validation           | ✅ Passed     |
+| CI pipeline build & test | ✅ Successful |
+| Feature PR workflow	   | ✅ Working    |
+| Release automation	   | ✅ Triggered  |
+| HTML report generation   | ✅ Verified   |
+| Dependency graph output  | ✅ Verified   |
 
-| Version  | Feature                             | Status       |
-|----------|-----------------------------------|--------------|
-| `v0.2.0` | ConfigManager + `.properties` files | 🗂️ Planned  |
-| `v0.3.0` | GitHub Actions CI integration       | 🛠️ Planned  |
 
+## 📌 How to Use / Verify
+1. Validate POM locally:
+```bash
+chmod +x scripts/pom-validator.sh
+./scripts/pom-validator.sh --html --graph
+```
 
-## 👤 Author
+2. Run CI-friendly Maven build:
+```bash
+mvn clean verify -DskipTests
+```
 
-**Anuj Kumar** – [LinkedIn](https://www.linkedin.com/in/anuj-kumar-qa/)  
-🏅 *QA Consultant & Test Automation Engineer*
+## ✅ Post-Release Actions
+- Monitor initial CI pipeline runs for anomalies
+- Document the CI/CD workflow for team onboarding
+- Apply branch protection rules on `main` and `dev`
+- Begin work on next milestone `(v0.3.0)`
+
+## 📎 Related
+🔗 Issue: #3 – CI/CD Pipeline Implementation
+🧵 PR: `feature/ci-setup` → `dev`
