@@ -107,7 +107,7 @@ jobs:
           echo "✓ GPG signing test passed"
 
       # ----------------------------
-      # 7. Determine next version (UPDATED)
+      # 7. Determine next version
       # ----------------------------
       - name: Determine next version
         id: version
@@ -179,13 +179,12 @@ jobs:
           if git rev-parse "$TAG_TO_CHECK" >/dev/null 2>&1; then
             echo "::error::Tag $TAG_TO_CHECK already exists"
             echo "Checking if this is a re-run..."
-            # Check if we're trying to create the same version
-          if [ "$TAG_TO_CHECK" = "v0.0.0" ]; then
-            echo "Initial version already exists. Please manually create a new tag or add new commits."
+            if [ "$TAG_TO_CHECK" = "v0.0.0" ]; then
+              echo "Initial version already exists. Please manually create a new tag or add new commits."
+            fi
+            exit 1
           fi
-          exit 1
-          fi
-            echo "✓ Tag $TAG_TO_CHECK does not exist"
+          echo "✓ Tag $TAG_TO_CHECK does not exist"
 
       # ----------------------------
       # 9. Check current version
@@ -197,7 +196,6 @@ jobs:
           if [ -f "pom.xml" ]; then
             CURRENT_VERSION=$(grep -oP '(?<=<version>).*(?=</version>)' pom.xml | head -1)
             echo "Extracted from pom.xml: $CURRENT_VERSION"
-            # Also try Maven if available
             if command -v mvn &> /dev/null; then
               MVN_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout 2>/dev/null || echo "ERROR")
               echo "From Maven: $MVN_VERSION"
@@ -235,30 +233,22 @@ jobs:
           CURRENT_VERSION="${{ steps.current_version.outputs.current_version }}"
           NEW_VERSION="${{ steps.version.outputs.next_version }}"
           echo "Updating from $CURRENT_VERSION to $NEW_VERSION"
-          # Backup the original pom.xml
           cp pom.xml pom.xml.backup
-          # Method 1: Use Maven versions plugin
-          echo "Trying Maven versions:set..."
           if mvn versions:set -DnewVersion="$NEW_VERSION" -DgenerateBackupPoms=false; then
             echo "Maven versions:set completed"
           else
             echo "Maven versions:set failed or had no effect"
           fi
-          # Check if Maven actually changed the file
           if ! grep -q "<version>$NEW_VERSION</version>" pom.xml; then
             echo "Maven didn't update the version, trying manual methods..."
-            # Method 2: Try exact version tag replacement
             if grep -q "<version>$CURRENT_VERSION</version>" pom.xml; then
               echo "Using exact version replacement..."
-              # Use perl for more reliable regex matching
               perl -pi -e "s|<version>$CURRENT_VERSION</version>|<version>$NEW_VERSION</version>|g" pom.xml
             else
-              # Method 3: Try more flexible replacement
               echo "Using flexible version replacement..."
               perl -pi -e "s|$CURRENT_VERSION|$NEW_VERSION|g" pom.xml
             fi
           fi
-          # Verify the change was made
           if ! grep -q "<version>$NEW_VERSION</version>" pom.xml; then
             echo "::error::Failed to update version in pom.xml after all attempts"
             echo "Current content:"
@@ -275,14 +265,12 @@ jobs:
       # ----------------------------
       - name: Verify pom.xml changes
         run: |
-          # Check if pom.xml was modified
           if ! git diff --name-only HEAD | grep -q "pom.xml"; then
             echo "::error::pom.xml was not modified after update attempt"
             echo "Current content:"
             cat pom.xml
             exit 1
           fi
-          # Verify the new version is correct
           UPDATED_VERSION=$(grep -oP '(?<=<version>).*(?=</version>)' pom.xml | head -1)
           echo "Updated version in pom.xml: $UPDATED_VERSION"
           if [ "$UPDATED_VERSION" != "${{ steps.version.outputs.next_version }}" ]; then
@@ -338,13 +326,12 @@ jobs:
 
       - name: Merge PR to main
         run: |
-          # Try to auto-merge, but don't fail if branch protection prevents it
           gh pr merge "${{ env.RELEASE_BRANCH }}" --squash --auto || \
             echo "PR could not be auto-merged (may require manual approval)"
           echo "✓ PR merge attempted"
 
       # ----------------------------
-      # 17. Update dev branch (UPDATED to handle branch protection)
+      # 17. Update dev branch (Conflict-Free Approach)
       # ----------------------------
       - name: Debug - Show version information
         run: |
@@ -379,9 +366,28 @@ jobs:
           SNAPSHOT_BRANCH="chore/snapshot-update-$NEXT_SNAPSHOT"
           git checkout -b "$SNAPSHOT_BRANCH"
 
-          # Update pom.xml version
+          # Get the current version from dev branch
           CURRENT_VERSION=$(grep -oP '(?<=<version>).*(?=</version>)' pom.xml | head -1)
+          echo "Current dev version: $CURRENT_VERSION"
+
+          # Only update if needed
+          if [ "$CURRENT_VERSION" = "$NEXT_SNAPSHOT" ]; then
+            echo "Dev version is already $NEXT_SNAPSHOT, no update needed"
+            # Delete the temporary branch
+            git checkout dev
+            git branch -D "$SNAPSHOT_BRANCH"
+            exit 0
+          fi
+
+          # Update pom.xml version
           perl -pi -e "s|$CURRENT_VERSION|$NEXT_SNAPSHOT|g" pom.xml
+
+          # Verify the update
+          UPDATED_VERSION=$(grep -oP '(?<=<version>).*(?=</version>)' pom.xml | head -1)
+          if [ "$UPDATED_VERSION" != "$NEXT_SNAPSHOT" ]; then
+            echo "::error::Failed to update version in pom.xml. Expected: $NEXT_SNAPSHOT, Got: $UPDATED_VERSION"
+            exit 1
+          fi
 
           # Commit and push the branch
           git add pom.xml
@@ -395,7 +401,8 @@ jobs:
             --head "$SNAPSHOT_BRANCH" \
             --title "chore: update snapshot to $NEXT_SNAPSHOT" \
             --body "Automated update of snapshot version after release ${{ steps.version.outputs.new_tag }}"
-          echo "✓ Created PR for dev update. It may require manual approval due to branch protection rules."
+
+          echo "✓ Created PR for dev update to $NEXT_SNAPSHOT. It may require manual approval due to branch protection rules."
 
       # ----------------------------
       # 18. Cleanup

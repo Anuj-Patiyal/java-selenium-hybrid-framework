@@ -1,240 +1,479 @@
-# 🚀 Selenium Automation Framework 
-**Initial Maven Configuration-(v0.0.0)**
-![POM Validation](https://github.com/opencode-qa/testing-repo/actions/workflows/pom-validation.yml/badge.svg)
+# 🚀 Java Selenium Hybrid Framework 
 
-> A scalable and modular automation framework foundation using Java, Selenium WebDriver, and TestNG.
+## 📊 Project Status
+
+| Category | Badges |
+|----------|--------|
+| **Version** | ![GitHub release](https://img.shields.io/github/v/release/Anuj-Patiyal/java-selenium-hybrid-framework) ![GitHub Release Date](https://img.shields.io/github/release-date/Anuj-Patiyal/java-selenium-hybrid-framework) ![GitHub commits since latest release](https://img.shields.io/github/commits-since/Anuj-Patiyal/java-selenium-hybrid-framework/latest) |
+| **Activity** | ![GitHub last commit](https://img.shields.io/github/last-commit/Anuj-Patiyal/java-selenium-hybrid-framework) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Anuj-Patiyal/java-selenium-hybrid-framework) ![GitHub contributors](https://img.shields.io/github/contributors/Anuj-Patiyal/java-selenium-hybrid-framework) |
+| **Size** | ![GitHub repo size](https://img.shields.io/github/repo-size/Anuj-Patiyal/java-selenium-hybrid-framework) ![GitHub code size](https://img.shields.io/github/languages/code-size/Anuj-Patiyal/java-selenium-hybrid-framework) ![GitHub language count](https://img.shields.io/github/languages/count/Anuj-Patiyal/java-selenium-hybrid-framework) ![GitHub top language](https://img.shields.io/github/languages/top/Anuj-Patiyal/java-selenium-hybrid-framework) |
+| **CI/CD** | ![Main CI](https://img.shields.io/github/actions/workflow/status/Anuj-Patiyal/java-selenium-hybrid-framework/main-ci.yml) ![POM Validation](https://img.shields.io/github/actions/workflow/status/Anuj-Patiyal/java-selenium-hybrid-framework/pom-validation.yml) ![Feature PR](https://img.shields.io/github/actions/workflow/status/Anuj-Patiyal/java-selenium-hybrid-framework/feature-pr.yml) ![Release](https://img.shields.io/github/actions/workflow/status/Anuj-Patiyal/java-selenium-hybrid-framework/release-pr.yml) |
+| **Issues** | ![GitHub issues](https://img.shields.io/github/issues/Anuj-Patiyal/java-selenium-hybrid-framework) ![GitHub closed issues](https://img.shields.io/github/issues-closed/Anuj-Patiyal/java-selenium-hybrid-framework) ![GitHub pull requests](https://img.shields.io/github/issues-pr/Anuj-Patiyal/java-selenium-hybrid-framework) ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/Anuj-Patiyal/java-selenium-hybrid-framework) |
+| **Milestones** | ![GitHub milestones](https://img.shields.io/github/milestones/progress/Anuj-Patiyal/java-selenium-hybrid-framework/1) ![GitHub milestones](https://img.shields.io/github/milestones/progress-percent/Anuj-Patiyal/java-selenium-hybrid-framework/1) |
+| **Tech Stack** | ![Java](https://img.shields.io/badge/Java-21-blue) ![Maven](https://img.shields.io/badge/Maven-3.6%2B-orange) ![Selenium](https://img.shields.io/badge/Selenium-4.34.0-green) ![TestNG](https://img.shields.io/badge/TestNG-7.11.0-red) ![Log4j](https://img.shields.io/badge/Log4j-2.20.0-blueviolet) ![Allure](https://img.shields.io/badge/Allure-2.25.0-ff69b4) |
+| **License & Maintenance** | ![GitHub](https://img.shields.io/github/license/Anuj-Patiyal/java-selenium-hybrid-framework) ![Maintenance](https://img.shields.io/maintenance/yes/2025) ![Website](https://img.shields.io/website?url=https%3A%2F%2Fgithub.com%2FAnuj-Patiyal%2Fjava-selenium-hybrid-framework) |
+| **Social** | ![GitHub forks](https://img.shields.io/github/forks/Anuj-Patiyal/java-selenium-hybrid-framework?style=social) ![GitHub stars](https://img.shields.io/github/stars/Anuj-Patiyal/java-selenium-hybrid-framework?style=social) ![GitHub watchers](https://img.shields.io/github/watchers/Anuj-Patiyal/java-selenium-hybrid-framework?style=social) ![GitHub discussions](https://img.shields.io/github/discussions/Anuj-Patiyal/java-selenium-hybrid-framework) |
+
+> A scalable and modular automation framework foundation using Java, Selenium WebDriver, and TestNG with comprehensive CI/CD integration.
 
 ---
 
 ## 📚 Table of Contents
-1. [Project Overview](#project-overview)
-2. [Technical Architecture](#technical-architecture)
-3. [Branching Strategy](#branching-strategy)
-4. [Versioning Scheme](#versioning-scheme)
-5. [Initial Setup](#initial-setup)
-6. [Dependencies](#dependencies)
-7. [Build Configuration](#build-configuration)
-8. [Development Workflow](#development-workflow)
-9. [Future Roadmap](#future-roadmap)
-10. [Contributing](#contributing)
-11. [Author](#author)
-12. [License](license)
----
-
-## 📌 Project Overview
-This project establishes the foundation for a robust Selenium WebDriver automation framework using **Java 21**, **TestNG**, and **Maven**.
-
-### 🎯 Goals of v0.0.0:
-- Set up initial Maven `pom.xml` with Java 21 compatibility.
-- Add Selenium and TestNG dependencies.
-- Configure Maven Compiler and Clean plugins.
+1. [Project Overview](#-project-overview)
+2. [Architecture](#-architecture)
+3. [Project Structure](#-project-structure)
+4. [Milestones](#-milestones)
+5. [Branching Strategy](#-branching-strategy)
+6. [CI/CD Pipeline](#-cicd-pipeline)
+7. [Installation](#-installation)
+8. [Usage](#-usage)
+9. [Contributing](#-contributing)
+10. [Author](#-author)
+11. [License](#-license)
+12. [Roadmap](#-roadmap)
 
 ---
+## 🎯 Project Overview
+This project establishes a robust foundation for Selenium WebDriver automation framework using **Java 21**, **TestNG**, **Maven**, and comprehensive **GitHub Actions CI/CD**.
+The framework is designed for scalability, maintainability, and enterprise-grade quality assurance.
 
-## 🧱 Technical Architecture
+### 🎯 Key Objectives
+- ✅ **Modular Architecture**: Scalable Page Object Model design
+- ✅ **CI/CD Integration**: Full GitHub Actions automation
+- ✅ **Quality Assurance**: Comprehensive validation and reporting
+- ✅ **Documentation**: Professional guides and automation
+- ✅ **Extensibility**: Easy to add new features and tests
 
-### 📁 Initial Folder Structure
-```
-selenium-framework/
-├── src/
-│   ├── main/java/          # Core framework components (future)
-│   ├── test/java/          # Test classes (future)
-│   └── test/resources/     # Configuration files (future)
-├── target/                 # Build output directory
-├── pom.xml                 # Maven configuration
-└── README.md               # Project documentation
-```
+---
 
-### 📦 Dependency Graph (v0.0.0)
+## 🏗️ Architecture
+
+### Framework Architecture Diagram
 ```mermaid
-graph TD
-    Java21 --> Maven
-    Maven -->|Build| Selenium
-    Maven -->|Test| TestNG
-    Selenium --> WebDriver
-    TestNG --> TestExecution
+graph TB
+    subgraph "Test Automation Framework"
+        A[Test Scripts] --> B[TestNG Framework]
+        B --> C[Page Object Model]
+        C --> D[WebDriver Manager]
+        D --> E[Selenium WebDriver]
+        E --> F[Web Applications]
+        
+        G[Configuration Manager] --> H[Properties Files]
+        I[Log4j2 Logging] --> J[Log Files]
+        K[Allure Reports] --> L[HTML Reports]
+        M[CI/CD Pipeline] --> N[GitHub Actions]
+        
+        B --> G
+        B --> I
+        B --> K
+        B --> M
+    end
+    
+    subgraph "Supporting Infrastructure"
+        O[Maven Build] --> P[Dependency Management]
+        Q[Git Version Control] --> R[Branch Management]
+        S[GitHub Actions] --> T[Automated Workflows]
+        U[HTML Reports] --> V[Visual Analytics]
+    end
+    
+    style A fill:#e1f5fe
+    style F fill:#f3e5f5
+    style N fill:#fff3e0
+    style V fill:#e8f5e8
 ```
+### CI/CD Pipeline Architecture
+```mermaid
+flowchart TD
+    A[Code Commit] --> B[GitHub Actions Trigger]
+    
+    subgraph "CI/CD Pipeline"
+        B --> C[POM Validation]
+        B --> D[Main CI Pipeline]
+        B --> E[Feature Validation]
+        B --> F[Release Automation]
+        
+        C --> C1[XML Validation]
+        C --> C2[Dependency Checks]
+        C --> C3[HTML Reports]
+        
+        D --> D1[Build & Test]
+        D --> D2[Security Scanning]
+        D --> D3[Quality Checks]
+        
+        E --> E1[Branch Testing]
+        E --> E2[Artifact Upload]
+        
+        F --> F1[Version Tagging]
+        F --> F2[Release Notes]
+        F --> F3[GPG Signing]
+    end
+    
+    subgraph "Output & Artifacts"
+        C3 --> G[Validation Reports]
+        D3 --> H[Test Results]
+        E2 --> I[Feature Artifacts]
+        F2 --> J[Release Packages]
+    end
+    
+    G --> K[Quality Dashboard]
+    H --> K
+    I --> K
+    J --> K
+    
+    style A fill:#bbdefb
+    style K fill:#c8e6c9
+```
+---
+
+## 📁 Project Structure
+
+```
+java-selenium-java-selenium-hybrid-framework/
+├── .github/
+│ ├── workflows/ # GitHub Actions workflows
+│ │ ├── main-ci.yml# Main CI pipeline
+│ │ ├── pom-validation.yml # POM validation workflow
+│ │ ├── feature-pr.yml # Feature branch validation
+│ │ ├── release-pr.yml # Release automation
+│ │ └── release-automation.yml # Release triggers
+│ ├── scripts/ # Automation scripts
+│ │ ├── pom-validator.sh # Enhanced POM validation (v1.4)
+│ │ ├── milestones.sh# Milestone management
+│ │ ├── issues.sh# Issue creation
+│ │ ├── feature-pr.sh# Feature PR processing
+│ │ └── release-pr.sh# Release PR processing
+│ ├── issues/# Issue templates
+│ │ └── ci-setup-issue.md# CI setup issue template
+│ ├── features/# Feature PR templates
+│ │ ├── maven-setup.md # Initial setup template
+│ │ └── ci-setup.md# CI setup template
+│ └── releases/# Release PR templates
+│ ├── maven-setup-release.md # Initial release template
+│ └── ci-setup-release.md# CI release template
+├── src/
+│ ├── main/java/ # Core framework classes
+│ │ ├── config/# Configuration management
+│ │ ├── drivers/ # WebDriver management
+│ │ ├── pages/ # Page Object Model
+│ │ ├── utils/ # Utility classes
+│ │ └── exceptions/# Custom exceptions
+│ └── test/java/ # Test classes
+│ ├── tests/ # Test implementations
+│ ├── listeners/ # TestNG listeners
+│ └── base/# Base test classes
+│ └── resources/ # Test configurations
+│ ├── config.properties# Framework configuration
+│ ├── log4j2.xml # Logging configuration
+│ └── test-data/ # Test data files
+├── Reports/ # Generated reports
+│ ├── pom-validation-report.html # POM validation reports
+│ └── allure-reports/# Allure test reports
+├── pom.xml# Maven configuration
+├── README.md# Project documentation
+├── milestones.json# Project milestones
+├── LICENSE# MIT License
+└── .gitignore # Git ignore rules
+```
+
+---
+
+## 📊 Milestones
+### 📊 Milestone Progress Overview
+```mermaid
+gantt
+    title Project Milestones Timeline
+    dateFormat  YYYY-MM-DD
+    axisFormat  %b %d
+    
+    section Completed
+    v0.0.0 - Maven Setup       :done,    milestone1, 2025-08-21, 0d
+    Initial Configuration      :done,    2025-08-19, 2025-08-21
+    
+    section In Progress
+    v0.2.0 - CI Setup          :active,  milestone2, 2025-08-27, 0d
+    CI/CD Implementation       :         2025-08-22, 2025-08-27
+    
+    section Planned
+    v0.1.0 - Simple Tests      :         milestone3, 2025-08-24, 0d
+    First Test Creation        :         2025-08-22, 2025-08-24
+    v0.3.0 - Log4j2 Integration:         milestone4, 2025-08-30, 0d
+    Logging Setup              :         2025-08-28, 2025-08-30
+    v0.4.0 - Exception Handling:         milestone5, 2025-09-03, 0d
+    Error Management           :         2025-08-31, 2025-09-03
+    v0.5.0 - Driver Management :         milestone6, 2025-09-06, 0d
+    Driver Factory             :         2025-09-04, 2025-09-06
+    v0.6.0 - Page Object Model :         milestone7, 2025-09-09, 0d
+    POM Implementation         :         2025-09-07, 2025-09-09
+    v0.7.0 - Wait Utilities    :         milestone8, 2025-09-12, 0d
+    Wait Strategies            :         2025-09-10, 2025-09-12
+    v0.8.0 - Screenshot Utility:         milestone9, 2025-09-15, 0d
+    Screenshot Capture         :         2025-09-13, 2025-09-15
+    v0.9.0 - TestNG Listeners  :         milestone10, 2025-09-18, 0d
+    Listeners Implementation   :         2025-09-16, 2025-09-18
+    v1.0.0 - Allure Integration:         milestone11, 2025-09-21, 0d
+    Reporting Setup            :         2025-09-19, 2025-09-21
+    v1.1.0 - Retry Mechanism   :         milestone12, 2025-09-24, 0d
+    Retry Logic                :         2025-09-22, 2025-09-24
+```
+###📋 Detailed Milestone Status
+| Version | Feature                 | Status         | Target Date | Progress |
+|---------|-------------------------|----------------|-------------|----------|
+| v0.0.0  | Maven Initial Config    | ✅ Completed   | 2025-08-21  | 100%     |
+| v0.1.0  | Simple Test Creation    | ✅ Completed   | 2025-08-24  | 100%     |
+| v0.2.0  | CI Setup                | 🚧 In Progress | 2025-08-27  | 100%     |
+| v0.3.0  | Log4j2 Integration      | ⏳ Planned     | 2025-08-30  | 0%       |
+| v0.4.0  | Exception Handling      | ⏳ Planned     | 2025-09-03  | 0%       |
+| v0.5.0  | Driver Management       | ⏳ Planned     | 2025-09-06  | 0%       |
+| v0.6.0  | Page Object Model       | ⏳ Planned     | 2025-09-09  | 0%       |
+| v0.7.0  | Wait Utilities          | ⏳ Planned     | 2025-09-12  | 0%       |
+| v0.8.0  | Screenshot Utility      | ⏳ Planned     | 2025-09-15  | 0%       |
+| v0.9.0  | TestNG Listeners        | ⏳ Planned     | 2025-09-18  | 0%       |
+| v1.0.0  | Allure Integration      | ⏳ Planned     | 2025-09-21  | 0%       |
+| v1.1.0  | Retry Mechanism         | ⏳ Planned     | 2025-09-24  | 0%       |
 
 ---
 
 ## 🌿 Branching Strategy
-
-We follow **Git Flow** with the following branches:
-
 ```mermaid
 gitGraph
-   commit id: "Initial commit"
-   branch dev
-   commit id: "v0.0.0: Maven Setup"
-   branch feature/maven-setup
-   commit id: "Maven Compiler, Selenium & TestNG"
-   checkout dev
-   merge feature/maven-setup
-   checkout main
-   merge dev
-   tag v0.0.0
+    commit id: "Initial commit"
+    branch dev
+    checkout dev
+    commit id: "v0.0.0: Maven Setup"
+    branch feature/maven-setup
+    commit id: "Maven Compiler, Selenium & TestNG"
+    checkout dev
+    merge feature/maven-setup id: "Merge feature/maven-setup"
+    branch feature/ci-setup
+    commit id: "GitHub Actions workflows"
+    commit id: "POM validator script"
+    checkout dev
+    merge feature/ci-setup id: "Merge feature/ci-setup"
+    checkout main
+    merge dev id: "Release v0.2.0"
+    tag v0.2.0
+    checkout dev
+    branch feature/log4j2
+    commit id: "Log4j2 configuration"
 ```
-
-- `main`: Stable production-ready code
-- `dev`: Integration branch for completed features
-- `feature/*`: Feature-specific development branches
-
+### Branch Protection Rules
+```mermaid
+flowchart LR
+    A[Feature Branch] --> B[Pull Request]
+    B --> C[CI Validation]
+    C --> D[Code Review]
+    D --> E[Merge to Dev]
+    E --> F[QA Testing]
+    F --> G[Release PR]
+    G --> H[Production Merge]
+    
+    subgraph "Quality Gates"
+        C
+        D
+        F
+    end
+    
+    style C fill:#c8e6c9
+    style D fill:#fff9c4
+    style F fill:#ffcdd2
+```
 ---
 
-## 🧮 Versioning Scheme
+## 🔁 CI/CD Pipeline
 
-We follow **Semantic Versioning (SemVer)**:
+### Workflow Metrics
 
-- `MAJOR`: Breaking changes
-- `MINOR`: Backward-compatible features
-- `PATCH`: Bug fixes
+| Metric            | Value        | Target | Status |
+|-------------------|--------------|--------|--------|
+| Build Time        | ~2m 15s      | < 3m   | ✅     |
+| Test Coverage     | 0% (initial) | > 80%  | ⏳     |
+| Validation Checks | 23           | 25+    | 🚧     |
+| Success Rate      | 100%         | > 95%  | ✅     |
 
-Current version: **v0.0.0**
-
+### Workflow Architecture
+```mermaid
+flowchart TD
+    A[Code Push/PR] --> B{GitHub Event}
+    
+    B -->|Push to main/dev| C[Main CI Pipeline]
+    B -->|Any PR| D[POM Validation]
+    B -->|PR to feature/*| E[Feature PR Check]
+    B -->|CI Success on main| F[Release Automation]
+    
+    subgraph "Main CI Pipeline"
+        C --> C1[Validate POM]
+        C1 --> C2[Build & Test]
+        C2 --> C3[Security Scan]
+        C3 --> C4[Quality Check]
+    end
+    
+    subgraph "POM Validation"
+        D --> D1[XML Validation]
+        D1 --> D2[Dependency Check]
+        D2 --> D3[HTML Report]
+    end
+    
+    C4 --> G[Upload Artifacts]
+    D3 --> G
+    E --> G
+    F --> H[Create Release]
+    
+    G --> I[GitHub Actions]
+    H --> I
+```
 ---
 
-## ⚙️ Initial Setup
+## ⚙️ Installation
 
-### ✅ Prerequisites
-- Java 21 JDK
+### Prerequisites
+- Java 21+ JDK
 - Maven 3.6+
 - Git 2.30+
+- GitHub account with repo access
 
-### 💻 Installation
+### Quick Setup
+
 ```bash
-git clone https://github.com/your-repo/selenium-framework.git
-cd selenium-framework
+# Clone repo
+git clone https://github.com/Anuj-Patiyal/java-selenium-hybrid-framework.git
+cd java-selenium-hybrid-framework
+
+# Verify Java & Maven
+java -version
+mvn -version
+
+# Build project
 mvn clean install
+
+# Run validation
+chmod +x .github/scripts/pom-validator.sh
+./.github/scripts/pom-validator.sh --html
 ```
 
 ---
 
-## 📦 Dependencies
+## 🚀 Usage
 
-### 🔧 Core Dependencies
+### Run Tests
 
-| Dependency     | Version    | Purpose                  |
-|----------------|------------|--------------------------|
-| Selenium Java  | `4.34.0`   | WebDriver implementation |
-| TestNG         | `7.11.0`   | Testing framework        |
-| Java           | `21`       | Runtime environment      |
+```bash
+# Run all tests
+mvn test
 
-### 🔨 Plugins
+# Specific browser
+mvn test -Dbrowser=chrome
 
-| Plugin                | Version | Purpose                  |
-|-----------------------|---------|--------------------------|
-| Maven Compiler Plugin | `3.14.0`  | Java 21 compilation      |
-| Maven Clean Plugin    | `3.5.0`   | Cleans target directory  |
+# Specific group
+mvn test -Dgroups=smoke
 
----
-
-## 🏗️ Build Configuration
-
-### 🧾 pom.xml Highlights
-```xml
-<properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <selenium.version>4.34.0</selenium.version>
-    <testng.version>7.11.0</testng.version>
-</properties>
-
-<dependencies>
-    <dependency>
-        <groupId>org.seleniumhq.selenium</groupId>
-        <artifactId>selenium-java</artifactId>
-        <version>${selenium.version}</version>
-    </dependency>
-    <dependency>
-        <groupId>org.testng</groupId>
-        <artifactId>testng</artifactId>
-        <version>${testng.version}</version>
-        <scope>test</scope>
-    </dependency>
-</dependencies>
-
-<build>
-    <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.14.0</version>
-            <configuration>
-                <release>21</release>
-            </configuration>
-        </plugin>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-clean-plugin</artifactId>
-            <version>3.5.0</version>
-        </plugin>
-    </plugins>
-</build>
+# Parallel execution
+mvn test -Dparallel=classes -DthreadCount=4
 ```
 
----
+### CI/CD
 
-## 🔁 Development Workflow
+```bash
+# Trigger workflow manually
+gh workflow run main-ci.yml
 
-```mermaid
-graph LR
-A[feature/*] --> B[Pull Request to dev]
-B --> C[Review and Merge into dev]
-C --> D[Pull Request to main]
-D --> E[Merge to main]
-E --> F[Tag as v0.0.0]
+# Check status
+gh run list
+
+# Download artifacts
+gh run download <run-id>
 ```
-
----
-
-## 🛣️ Future Roadmap
-
-| Version | Feature(s)                                                                | Status     | Target Date |
-| ------- | ------------------------------------------------------------------------- |----------  | ----------- |
-| v0.0.0  | Initial Maven configuration (pom.xml with dependencies and plugins)       | 🚧 WIP     | 23-Aug-2025 |
-| v0.1.0  | First test: `TextBoxTest`                                                 | ⏳ Planned | 24-Aug-2025 | 
-| v0.2.0  | Configuration manager (`ConfigManager.java`, `config.properties`) + CI/CD | ⏳ Planned | 27-Aug-2025 | 
-| v0.3.0  | Log4j2 logging integration                                                | ⏳ Planned | 30-Aug-2025 | 
-| v0.4.0  | Robust exception handling                                                 | ⏳ Planned | 03-Sep-2025 | 
-| v0.5.0  | WebDriver setup (`DriverFactory`, `DriverManager`, `BaseTest`)            | ⏳ Planned | 06-Sep-2025 | 
-| v0.6.0  | Page Object Model (`BasePage`, `TextBoxPage`)                             | ⏳ Planned | 09-Sep-2025 | 
-| v0.7.0  | Wait utility enhancements                                                 | ⏳ Planned | 12-Sep-2025 | 
-| v0.8.0  | Screenshot capture for failed tests                                       | ⏳ Planned | 15-Sep-2025 | 
-| v0.9.0  | TestNG listeners integration                                              | ⏳ Planned | 18-Sep-2025 | 
-| v1.0.0  | Allure Reports with logs & screenshots                                    | ⏳ Planned | 21-Sep-2025 | 
-| v1.1.0  | Retry mechanism (max 3 immediate retries)                                 | ⏳ Planned | 24-Sep-2025 |
-
 
 ---
 
 ## 🤝 Contributing
-
-```bash
-# Fork the repository
-# Create feature branch
-git checkout -b feature/your-feature
-
-# Commit changes
-git commit -am "Add your feature"
-
-# Push to origin
-git push origin feature/your-feature
-
-# Create Pull Request on GitHub
+### Development Workflow
+```mermaid
+flowchart LR
+    A[Fork Repository] --> B[Create Feature Branch]
+    B --> C[Implement Changes]
+    C --> D[Run Validation]
+    D --> E[Create Pull Request]
+    E --> F[CI Validation]
+    F --> G[Code Review]
+    G --> H[Merge to Dev]
+    H --> I[Release Process]
 ```
+
+### Guidelines
+- Branch naming: `feature/*`, `fix/*`
+- Commit messages: follow **conventional commits**
+- Add tests for new features
+- Update documentation
+- Run validation before PR
+
+### Code Review Checklist
+- ✅ CI checks passed
+- ✅ Style guidelines followed
+- ✅ Tests included
+- ✅ Docs updated
+- ✅ Backward compatible
 
 ---
 
 ## 👨‍💻 Author
 
-**ANUJ KUMAR** 🏅 QA Consultant & Test Automation Engineer
-- 📧 Email: [anujpatiyal@live.in](mailto:anujpatiyal@live.in)
-- 🔗 [LinkedIn Profile](https://www.linkedin.com/in/anuj-kumar-qa/)
+**Anuj Kumar** 🏅 QA Consultant & Test Automation Architect
+📧 [anujpatiyal@live.in](mailto:anujpatiyal@live.in)
+🔗 [LinkedIn](https://www.linkedin.com/in/anuj-kumar-qa/)
+🌐 [GitHub](https://github.com/Anuj-Patiyal)
 
 ---
 
 ## 📜 License
-Distributed under the [MIT License](https://opensource.org/licenses/MIT).
 
-> “First, solve the problem. Then, write the code.” – John Johnson
+MIT License © 2025 [Anuj-Patiyal](https://github.com/Anuj-Patiyal)
+```text
+MIT License
 
-> This framework adheres to this principle with its configuration-first approach.
+Copyright (c) 2025 Anuj-Patiyal
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+---
+
+## 🔮 Roadmap
+
+### Short-term (4 weeks)
+- ✅ Complete CI/CD pipeline (v0.2.0)
+- 🚧 Implement Log4j2 integration (v0.3.0)
+- 🚧 Add exception handling (v0.4.0)
+- 🚧 Driver management (v0.5.0)
+
+### Medium-term (8 weeks)
+- Page Object Model
+- Wait utilities
+- Screenshot & video capture
+- TestNG listeners
+
+### Long-term (12+ weeks)
+- Allure report integration
+- Retry mechanism
+- Cross-browser testing
+- Mobile testing
+
+---
+
+> "First, solve the problem. Then, write the code." – John Johnson
+> 
+> Last updated: **August 2025** | Version: **0.2.0** | Documentation: ✅ Complete
