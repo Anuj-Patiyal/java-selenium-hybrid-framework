@@ -1,6 +1,8 @@
 package tests;
 
 import java.time.Duration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -13,24 +15,24 @@ public class TextBoxTest {
 
     WebDriver driver;
     WebDriverWait wait;
+    private static final Logger logger = LogManager.getLogger(TextBoxTest.class);
 
     @BeforeClass
     public void setUp()
     {
+        logger.info("Setting up ChromeDriver with headless options.");
         ChromeOptions options = new ChromeOptions();
-
-        // Prevent usage of user data dir
-        options.addArguments("--no-sandbox"); // Good practice in CI
+        options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--headless=new"); // Required in CI unless using Xvfb
-        options.addArguments("--disable-gpu"); // Optional, useful for stability
-        options.addArguments("--remote-allow-origins=*"); // Avoid CORS issues
+        options.addArguments("--headless=new");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--disable-popup-blocking");
 
-        // START SESSION
         driver = new ChromeDriver(options);
         driver.manage().window().setSize(new Dimension(1920, 1080));
         driver.get("https://demoqa.com/text-box");
+        logger.info("Navigated to demoqa Text Box page.");
 
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
@@ -38,54 +40,60 @@ public class TextBoxTest {
     @Test
     public void testTextBoxFormSubmission()
     {
-        // Input data
+        logger.info("Starting form submission test.");
+
         String fullName = "John Doe";
         String email = "john.doe@example.com";
         String currentAddress = "123 Main St";
         String permanentAddress = "456 Secondary St";
 
-        // Fill form fields with wait
+        logger.debug("Filling form fields.");
         waitAndSendKeys(By.id("userName"), fullName);
         waitAndSendKeys(By.id("userEmail"), email);
         waitAndSendKeys(By.id("currentAddress"), currentAddress);
         waitAndSendKeys(By.id("permanentAddress"), permanentAddress);
 
-        // Click the submit button robustly
         By submitButtonLocator = By.id("submit");
         WebElement submitButton = wait.until(ExpectedConditions.presenceOfElementLocated(submitButtonLocator));
 
         try {
-            // Scroll into view
+            logger.debug("Clicking submit button.");
             ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);", submitButton);
             wait.until(ExpectedConditions.elementToBeClickable(submitButton)).click();
         } catch (ElementClickInterceptedException e) {
-            // Fallback to JS click in case of overlay
+            logger.warn("ElementClickInterceptedException caught. Clicking via JavaScript.");
             ((JavascriptExecutor)driver).executeScript("arguments[0].click();", submitButton);
         }
 
-        // Validate outputs
+        logger.debug("Validating form output.");
         Assert.assertEquals(waitAndGetText(By.id("name")), "Name:" + fullName);
         Assert.assertEquals(waitAndGetText(By.id("email")), "Email:" + email);
         Assert.assertEquals(waitAndGetText(By.xpath("//p[@id='currentAddress']")), "Current Address :" + currentAddress);
         Assert.assertEquals(waitAndGetText(By.xpath("//p[@id='permanentAddress']")),
             "Permananet Address :" + permanentAddress);
+
+        logger.info("Form submission test passed.");
     }
 
     private void waitAndSendKeys(By locator, String text)
     {
+        logger.debug("Waiting for element {} to be visible.", locator);
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         element.clear();
         element.sendKeys(text);
+        logger.debug("Entered text '{}' into element {}.", text, locator);
     }
 
     private String waitAndGetText(By locator)
     {
+        logger.debug("Getting text from element {}.", locator);
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getText();
     }
 
     @AfterClass
     public void tearDown()
     {
+        logger.info("Tearing down WebDriver.");
         if (driver != null) {
             driver.quit();
         }
