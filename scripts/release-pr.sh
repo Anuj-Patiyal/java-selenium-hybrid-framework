@@ -9,27 +9,30 @@ readonly CI_RETRY_DELAY=10  # seconds
 readonly LABEL_COLOR="0366d6"
 readonly REQUIRED_FIELDS=("title" "labels" "milestone")
 
-# === ANSI Color Codes ===
-readonly GREEN='\033[1;32m'
-readonly ORANGE='\033[38;5;214m'
-readonly RED='\033[1;31m'
+# === ANSI Color Codes (Updated to match milestones.sh) ===
+readonly GREEN='\033[0;32m'
+readonly BLUE='\033[0;34m'
+readonly PURPLE='\033[0;35m'
+readonly CYAN='\033[0;36m'
+readonly RED='\033[0;31m'
+readonly YELLOW='\033[0;33m'
 readonly WHITE='\033[1;37m'
-readonly BLUE='\033[1;34m'
-readonly PURPLE='\033[1;35m'
-readonly CYAN='\033[1;36m'
+readonly GRAY='\033[0;90m'
 readonly NC='\033[0m'
 
-# === Icons ===
-readonly ICON_PASS="${GREEN}✓${NC}"
-readonly ICON_WARN="${ORANGE}⚠${NC}"
-readonly ICON_FAIL="${RED}✗${NC}"
+# === Icons (Updated to match milestones.sh) ===
+readonly ICON_PASS="${GREEN}✔${NC}"
+readonly ICON_FAIL="${RED}✖${NC}"
+readonly ICON_WARN="${YELLOW}⚠${NC}"
 readonly ICON_INFO="${BLUE}ℹ${NC}"
-readonly ICON_SKIP="${WHITE}○${NC}"
+readonly ICON_SKIP="${CYAN}○${NC}"
 readonly ICON_ADD="${PURPLE}+${NC}"
 readonly ICON_UPDATE="${CYAN}↻${NC}"
 readonly ICON_RELEASE="${PURPLE}🚀${NC}"
 readonly ICON_TAG="${BLUE}🏷️${NC}"
 readonly ICON_VERSION="${GREEN}🔖${NC}"
+readonly ICON_MILESTONE="${PURPLE}📌${NC}"
+readonly ICON_FILE="${BLUE}📄${NC}"
 
 # === Global Variables ===
 declare -A CHECKS_COUNT=( ["pass"]=0 ["warn"]=0 ["fail"]=0 ["info"]=0 ["skip"]=0 )
@@ -51,7 +54,7 @@ log_info() {
 }
 
 log_warn() {
-    echo -e "${ICON_WARN} ${ORANGE}$1${NC}" >&2
+    echo -e "${ICON_WARN} ${YELLOW}$1${NC}" >&2
     CHECKS_COUNT[warn]=$((CHECKS_COUNT[warn]+1))
     CHECK_RESULTS+=("warn")
 }
@@ -70,7 +73,7 @@ log_error() {
 }
 
 log_skip() {
-    echo -e "${ICON_SKIP} ${WHITE}$1${NC}" >&2
+    echo -e "${ICON_SKIP} ${CYAN}$1${NC}" >&2
     CHECKS_COUNT[skip]=$((CHECKS_COUNT[skip]+1))
     CHECK_RESULTS+=("skip")
 }
@@ -116,7 +119,10 @@ get_yaml_value() {
 # === Version Functions ===
 
 get_current_version() {
-    # Get latest tag from the entire repo history, not just current branch
+    # Fetch all tags from remote to ensure we have the latest
+    git fetch --tags >/dev/null 2>&1 || log_warn "Failed to fetch tags from remote"
+
+    # Get latest tag from the entire repo history
     CURRENT_VERSION=$(git tag --list 'v*' --sort=-v:refname | head -n 1 2>/dev/null)
 
     # If no tags found, set to initial version
@@ -137,13 +143,23 @@ get_current_version() {
 }
 
 get_next_version() {
-    local version="${CURRENT_VERSION#v}"
-    IFS='.' read -r major minor patch <<< "$version"
+    # Extract version from milestone if available
+    local milestone_version=$(echo "$MILESTONE" | grep -o 'v[0-9]\+\.[0-9]\+\.[0-9]\+')
 
-    if $IS_INITIAL_RELEASE; then
-        NEXT_VERSION="v0.1.0"
+    if [[ -n "$milestone_version" ]]; then
+        NEXT_VERSION="$milestone_version"
+        log_info "Using milestone version: $NEXT_VERSION"
     else
-        NEXT_VERSION="v${major}.$((minor+1)).0"
+        # Fallback to auto-increment if no milestone version found
+        local version="${CURRENT_VERSION#v}"
+        IFS='.' read -r major minor patch <<< "$version"
+
+        if $IS_INITIAL_RELEASE; then
+            NEXT_VERSION="v0.1.0"
+        else
+            NEXT_VERSION="v${major}.$((minor+1)).0"
+        fi
+        log_info "Auto-generated next version: $NEXT_VERSION"
     fi
 }
 
@@ -301,13 +317,18 @@ process_labels() {
 
         if [[ ",${current_repo_labels}," != *",${label},"* ]]; then
             log_info "Creating release label '$label'"
-            gh label create "$label" --color "$LABEL_COLOR" --description "Release automation" \
-                || log_warn "Failed to create label '$label' (may already exist)"
+            if gh label create "$label" --color "$LABEL_COLOR" --description "Release automation" 2>/dev/null; then
+                log_success "Created label '$label'"
+            else
+                log_skip "Label '$label' already exists"
+            fi
+        else
+            log_skip "Label '$label' already exists in repository"
         fi
 
         log_info "Adding release label '$label'"
-        if ! gh pr edit "$pr_num" --add-label "$label" >/dev/null; then
-            log_warn "Failed to add label '$label' (may already be applied)"
+        if ! gh pr edit "$pr_num" --add-label "$label" >/dev/null 2>&1; then
+            log_skip "Label '$label' already applied to PR"
         else
             log_success "Added release label '$label'"
         fi
@@ -409,11 +430,11 @@ print_progress_bar() {
 
     for result in "${CHECK_RESULTS[@]}"; do
         case "$result" in
-            "pass") filled_bar+="🟩";;
-            "warn") filled_bar+="🟧";;
-            "fail") filled_bar+="🟥";;
-            "info") filled_bar+="🟦";;
-            "skip") filled_bar+="⬛";;
+            "pass") filled_bar+="${GREEN}■${NC}";;
+            "warn") filled_bar+="${YELLOW}■${NC}";;
+            "fail") filled_bar+="${RED}■${NC}";;
+            "info") filled_bar+="${BLUE}■${NC}";;
+            "skip") filled_bar+="${GRAY}■${NC}";;
         esac
     done
 
@@ -422,17 +443,112 @@ print_progress_bar() {
 
 print_summary() {
     echo -e "\n${WHITE}📊 Release Validation Summary:${NC}"
-    printf "  ${ICON_PASS} Passed    ${GREEN}🟢  ⇒ %2d\n" "${CHECKS_COUNT[pass]}"
-    printf "  ${ICON_WARN} Warnings  ${ORANGE}🟠  ⇒ %2d\n" "${CHECKS_COUNT[warn]}"
-    printf "  ${ICON_FAIL} Failures  ${RED}🔴  ⇒ %2d\n" "${CHECKS_COUNT[fail]}"
-    printf "  ${ICON_INFO} Info      ${BLUE}🔵  ⇒ %2d\n" "${CHECKS_COUNT[info]}"
-    printf "  ${ICON_SKIP} Skipped   ${WHITE}⚫  ⇒ %2d\n" "${CHECKS_COUNT[skip]}"
+    printf "  ${ICON_PASS} Passed    ${GREEN}■  ⇒ %2d\n" "${CHECKS_COUNT[pass]}"
+    printf "  ${ICON_WARN} Warnings  ${YELLOW}■  ⇒ %2d\n" "${CHECKS_COUNT[warn]}"
+    printf "  ${ICON_FAIL} Failures  ${RED}■  ⇒ %2d\n" "${CHECKS_COUNT[fail]}"
+    printf "  ${ICON_INFO} Info      ${BLUE}■  ⇒ %2d\n" "${CHECKS_COUNT[info]}"
+    printf "  ${ICON_SKIP} Skipped   ${GRAY}■  ⇒ %2d\n" "${CHECKS_COUNT[skip]}"
 }
 
 print_release_banner() {
     echo -e "\n${PURPLE}╔══════════════════════════════════════════════════════════════╗"
-    echo -e "║${NC}${PURPLE}          🚀  R E L E A S E   P R O C E S S I N G          ${NC}${PURPLE}║"
+    echo -e "║${NC}${WHITE}          🚀  R E L E A S E   P R O C E S S I N G          ${NC}${PURPLE}║"
     echo -e "╚══════════════════════════════════════════════════════════════╝${NC}"
+}
+
+# === Enhanced File Detection Functions ===
+
+detect_release_version() {
+    local current_branch="$1"
+
+    # Try to extract version from branch name
+    if [[ "$current_branch" =~ [vV]?[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+        echo "$current_branch" | grep -o '[vV]\?[0-9]\+\.[0-9]\+\.[0-9]\+' | head -1
+        return 0
+    fi
+
+    # Try to extract version from milestone (if already parsed)
+    if [[ -n "$MILESTONE" ]] && [[ "$MILESTONE" =~ [vV]?[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+        echo "$MILESTONE" | grep -o '[vV]\?[0-9]\+\.[0-9]\+\.[0-9]\+' | head -1
+        return 0
+    fi
+
+    # Fallback: try to get version from git tags
+    local latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+    if [[ -n "$latest_tag" ]]; then
+        echo "$latest_tag"
+        return 0
+    fi
+
+    echo ""
+}
+
+find_metadata_file() {
+    local current_branch="$1"
+    local branch_key="${current_branch#release/}"
+
+    log_info "Searching for release metadata files..."
+
+    # 1. First try branch-specific file
+    local branch_file="${METADATA_DIR}/${branch_key}.md"
+    if [[ -f "$branch_file" ]]; then
+        echo "$branch_file"
+        log_success "Found branch-specific metadata file: ${branch_key}.md"
+        return 0
+    fi
+
+    # 2. Try to detect version and look for version-specific file
+    local detected_version=$(detect_release_version "$current_branch")
+    if [[ -n "$detected_version" ]]; then
+        # Normalize version format (ensure it starts with 'v')
+        if [[ ! "$detected_version" =~ ^v ]]; then
+            detected_version="v${detected_version}"
+        fi
+
+        local version_file="${METADATA_DIR}/release-${detected_version}.md"
+        if [[ -f "$version_file" ]]; then
+            echo "$version_file"
+            log_success "Found version-specific metadata file: release-${detected_version}.md"
+            return 0
+        fi
+
+        # Also try without the 'v' prefix
+        local version_no_v="${detected_version#v}"
+        version_file="${METADATA_DIR}/release-${version_no_v}.md"
+        if [[ -f "$version_file" ]]; then
+            echo "$version_file"
+            log_success "Found version-specific metadata file: release-${version_no_v}.md"
+            return 0
+        fi
+    fi
+
+    # 3. Try default release file
+    local default_file="${METADATA_DIR}/release.md"
+    if [[ -f "$default_file" ]]; then
+        echo "$default_file"
+        log_info "Using default metadata file: release.md"
+        return 0
+    fi
+
+    # 4. If no file found, show available options
+    log_warn "No specific metadata file found for branch '${current_branch}'"
+    log_info "Available metadata files:"
+    for file in "${METADATA_DIR}"/*.md; do
+        if [[ -f "$file" ]]; then
+            local filename=$(basename "$file")
+            echo -e "  ${ICON_FILE} ${BLUE}${filename}${NC}"
+        fi
+    done
+
+    # 5. Finally, try any .md file in the directory
+    local first_file=$(find "${METADATA_DIR}" -name "*.md" | head -1)
+    if [[ -n "$first_file" ]]; then
+        echo "$first_file"
+        log_warn "Falling back to first available file: $(basename "$first_file")"
+        return 0
+    fi
+
+    log_error "No release metadata files found in ${METADATA_DIR}/"
 }
 
 prepare_and_auto_merge_version_bump() {
@@ -605,27 +721,17 @@ main() {
     validate_required_tools
 
     local current_branch=$(get_current_branch)
-    local branch_key="${current_branch#release/}"
-
-    # First try branch-specific file
-    local metadata_file="${METADATA_DIR}/${branch_key}.md"
-
-    # If not found, try the default release.md
-    if [[ ! -f "$metadata_file" ]]; then
-        metadata_file="${METADATA_DIR}/release.md"
-        log_info "Using default metadata file: $metadata_file"
-    else
-        log_info "Using branch-specific metadata file: $metadata_file"
-    fi
-
     local repo=$(get_repo_name)
 
     log_info "Release branch: ${current_branch}"
     log_info "Target branch: ${TARGET_BRANCH}"
 
+    # Find the appropriate metadata file
+    local metadata_file=$(find_metadata_file "$current_branch")
+
     # Validate metadata file exists
     [[ -f "$metadata_file" ]] || log_error "Release metadata file not found: $metadata_file"
-    log_success "Found release metadata file: $metadata_file"
+    log_success "Using release metadata file: $(basename "$metadata_file")"
 
     # Parse metadata with strict validation
     TITLE=$(get_yaml_value "title" "$metadata_file")
@@ -651,17 +757,17 @@ main() {
     get_next_version
     validate_version_increment "$CURRENT_VERSION" "$NEXT_VERSION"
 
-    # Determine release_tag and next_dev
-    local release_tag dev_next
-    if $IS_INITIAL_RELEASE; then
-        release_tag="$NEXT_VERSION"  # For initial release, use v0.1.0
-        dev_next="v0.2.0"            # Next development version after initial release
-    else
-        release_tag="$NEXT_VERSION"   # For normal flow, use computed next version
-        # Compute next development version (bump minor again)
-        local v="${release_tag#v}"; IFS='.' read -r rmaj rmin rpatch <<< "$v"
-        dev_next="v${rmaj}.$((rmin+1)).0"
+    # Use the milestone version for release tag if available
+    local release_tag="$NEXT_VERSION"
+    local milestone_version=$(echo "$MILESTONE" | grep -o 'v[0-9]\+\.[0-9]\+\.[0-9]\+')
+    if [[ -n "$milestone_version" ]]; then
+        release_tag="$milestone_version"
     fi
+
+    # Calculate next development version
+    local v="${release_tag#v}"
+    IFS='.' read -r rmaj rmin rpatch <<< "$v"
+    local dev_next="v${rmaj}.$((rmin+1)).0"
 
     # Check for existing PR with robust error handling
     local pr_data
@@ -725,7 +831,7 @@ main() {
 
     # If dry-run, just print prepared body and exit
     if [[ "$DRY_RUN" == "true" ]]; then
-        echo "DRY RUN - PR title: [RELEASE] $TITLE ($release_tag)"
+        echo "DRY RUN - PR title: [RELEASE] $TITLE"
         echo "DRY RUN - PR body:"
         echo "--------------------"
         echo "$full_body"
@@ -733,8 +839,8 @@ main() {
         return 0
     fi
 
-    # Determine PR title: show the actual release tag
-    local pr_title="[RELEASE] $TITLE (${release_tag})"
+    # Determine PR title without hardcoded version
+    local pr_title="[RELEASE] $TITLE"
 
     # Create or update PR
     if [[ -z "$PR_NUMBER" ]]; then
@@ -777,13 +883,13 @@ main() {
         log_error "❌ Release processing completed with errors"
     else
         echo -e "\n${PURPLE}╔══════════════════════════════════════════════════════════════╗"
-        echo -e "║${NC}${GREEN}          🎉  R E L E A S E   R E A D Y           ${NC}${PURPLE}║"
+        echo -e "║${NC}${WHITE}          🎉  R E L E A S E   R E A D Y           ${NC}${PURPLE}║"
         echo -e "╚══════════════════════════════════════════════════════════════╝${NC}"
         log_success "${ICON_RELEASE} Release PR successfully processed: ${BLUE}${PR_URL}${NC}"
 
         # Fixed version message (show actual release tag)
-        echo -e "${ICON_VERSION} ${BLUE}Release tag to be created: ${GREEN}${release_tag}${BLUE}${NC}"
-        echo -e "${ICON_VERSION} ${BLUE}Next development version: ${GREEN}${dev_next}${BLUE}${NC}"
+        echo -e "${ICON_VERSION} ${BLUE}Release tag to be created: ${GREEN}${release_tag}${NC}"
+        echo -e "${ICON_VERSION} ${BLUE}Next development version: ${GREEN}${dev_next}${NC}"
     fi
 
     # Auto version bump if requested
